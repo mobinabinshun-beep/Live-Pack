@@ -22,7 +22,7 @@ The first intended pack is the existing N.U Pixel Art Studio demo, currently sou
 - entrypoint: `pixel-art-studio.html`
 - prior Pages URL: https://mobinabinshun-beep.github.io/mobinabinshun-beep/pixel-art-studio.html
 
-The source entrypoint depends on local runtime modules, styles and the main N.U page for one navigation link. The migration must inventory and transfer only the Studio entrypoint plus its proven runtime dependencies/assets, and must update internal navigation and test/report links to the new canonical location. Do not copy the entire product website or unrelated modules into this repository.
+The source entrypoint depends on local runtime modules, styles and the main N.U page for one navigation link. The migration must inventory and transfer only the Studio entrypoint plus its proven runtime dependencies/assets, and must update internal navigation and test/report links to the new canonical location. Do not copy the entire product website or unrelated modules.
 
 ## 4. Migration gate and provenance
 
@@ -45,11 +45,17 @@ Expected URL after Pages configuration is verified:
 
 This is an intended URL, not a claim that Pages is configured or live today.
 
-## 6. QA lifecycle
+## 6. QA lifecycle and public UI
 
 Required sequence: runtime baseline → scoped transfer/update → automated checks → verified pre-deploy backup → Pages deployment → live URL/build verification → post-deploy smoke → human QA handoff → explicit owner decision.
 
-The demo must visibly identify an unaccepted candidate as `TEST CANDIDATE — NOT HUMAN-APPROVED` with its exact build/commit and known limitations. The demo is not a product release. Human QA and owner acceptance are separate evidence states.
+The exact candidate commit/build identity, test status, known limitations and QA handoff evidence belong in repository records and reports, not in the public product UI. The public demo must match the downloadable/local product experience wherever the environment supports the same behavior. The only permitted public-demo introductory text is:
+
+`Welcome to N.U — Public Test Demo`
+
+Necessary functional, data-loss and security confirmations remain allowed. Infrastructure, development, CI, backup, deployment and QA labels/metadata must not be displayed as product UI. This section follows the owner-mandated Demo/Product Parity and Clean UI Principle (2026-11-24), which supersedes older instructions requiring visible candidate/build labels inside the page.
+
+Human QA and owner acceptance are separate evidence states. Deploying a demo candidate is QA handoff, not product release or production promotion.
 
 ## 7. Reports and acceptance
 
@@ -63,6 +69,7 @@ Only the owner can record acceptance for the exact build and scope. Acceptance d
 - The single live QA pack and its Pages deployment belong in `mobinabinshun-beep/Live-Pack`.
 - Governance, canonical records, manifests and historical backups remain in `mobinabinshun-beep/Repository`.
 - The archive repository must index this repository as a first-class N.U repository.
+- Activation work is tracked in [Live-Pack issue #1](https://github.com/mobinabinshun-beep/Live-Pack/issues/1).
 
 ## 9. Current state
 
