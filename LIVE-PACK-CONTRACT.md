@@ -21,12 +21,14 @@ The repository has one live slot and one lock record: [LIVE-PACK-LOCK.md](./LIVE
 
 **Binding scope override:** the [OWNER-SCOPE-ADDENDUM.md](./OWNER-SCOPE-ADDENDUM.md) supersedes the Studio-only wording below. The single live slot is the whole dependency-closed games-and-tools demo site; see the addendum and the Repository no-parallel-versions protocol.
 
-The first intended pack is the existing N.U Pixel Art Studio demo, currently sourced from:
+The binding owner scope is the dependency-closed N.U public demo site for games and tools:
 - source repository: https://github.com/mobinabinshun-beep/mobinabinshun-beep
-- entrypoint: `pixel-art-studio.html`
-- prior Pages URL: https://mobinabinshun-beep.github.io/mobinabinshun-beep/pixel-art-studio.html
+- primary entrypoint: `index.html`
+- linked routes: `launcher.html`, `casino.html`, `exchange.html`, `pixel-art-studio.html`, `sim-pixel-demo.html`
+- support route: `404.html`
+- prior Pages origin: https://mobinabinshun-beep.github.io/mobinabinshun-beep/
 
-The source entrypoint depends on local runtime modules, styles and the main N.U page for one navigation link. The migration must inventory and transfer only the Studio entrypoint plus its proven runtime dependencies/assets, and must update internal navigation and test/report links to the new canonical location. Do not copy the entire product website or unrelated modules.
+Transfer only the runtime pages, modules, styles, assets and public data required by those routes, determined by a path-level dependency manifest. Exclude historical/archive HTML, non-runtime documentation and unrelated files. `background-candidates.html` remains excluded pending classification. Internal navigation and report links must resolve within the new canonical origin; intentional external publication links remain external.
 
 ## 4. Migration gate and provenance
 
@@ -42,10 +44,11 @@ No claim of complete migration or backup is valid without fetch-back and hash ve
 
 ## 5. Pages and page connection
 
-GitHub Pages for this repository must serve the single Studio pack from this repository's default branch. The old Studio link in the product hub must be changed only after the new URL is live and verified. The product hub remains the broader N.U source repository; this repository owns only the active QA demo pack.
+GitHub Pages for this repository must serve the one whole-site demo pack from this repository's default branch. The root URL serves `index.html`; all game/tool routes and assets share this pack and origin. Product-hub links change only after the new Pages URL and build identity are independently verified.
 
-Expected URL after Pages configuration is verified:
-`https://mobinabinshun-beep.github.io/Live-Pack/pixel-art-studio.html`
+Expected URLs after Pages configuration is verified:
+- Root/library: `https://mobinabinshun-beep.github.io/Live-Pack/`
+- Studio: `https://mobinabinshun-beep.github.io/Live-Pack/pixel-art-studio.html`
 
 This is an intended URL, not a claim that Pages is configured or live today.
 
