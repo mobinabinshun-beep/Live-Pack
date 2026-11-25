@@ -32,3 +32,12 @@ The captured Pages artifact is useful recovery evidence, but direct public-URL H
 Only one active live pack may exist in this repository. Updates replace the contents of that same slot after the prescribed baseline, machine-test and backup gates. Candidate builds, old versions, snapshots and backups belong in their designated source/backup/archive locations, never as parallel live packs here.
 
 The lock file is the sole authority for the slot's state. Do not create numbered live packs, parallel current folders, or a second active lock.
+
+
+## Studio repository network
+
+- [N.U Game Studio repository network map](https://github.com/mobinabinshun-beep/Documentation/blob/docs/network-integration-2026-11-25/00-START-HERE/REPOSITORY-NETWORK-INDEX-fa.md)
+- [Central historical archive and repository register](https://github.com/mobinabinshun-beep/N.U-Game-Studio-Archive)
+- [Live-Pack onboarding record](https://github.com/mobinabinshun-beep/N.U-Game-Studio-Archive/blob/main/02-REGISTERS/SOURCE-REPOSITORY-REGISTER-fa.md)
+
+This repository remains the sole one-slot live QA demo location. The network links do not change the EMPTY / ACTIVATION-BLOCKED state or authorize runtime migration, deployment, or product release.
