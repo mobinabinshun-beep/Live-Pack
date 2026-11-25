@@ -1,86 +1,59 @@
-# N.U Live-Pack — operating contract
+# N.U Live-Pack — operating agreement
 
-## 1. Single purpose
+## 1. Purpose
 
-`Live-Pack` is the sole repository for the one currently active N.U public demo pack. It is the live laboratory for:
-- running the current demo;
-- machine smoke/regression checks;
-- human testing by the owner and invited testers;
-- issue, defect and test-report intake;
-- recording exact-build human results and owner acceptance.
+`Live-Pack` is the single home for the current N.U public demo site covering all games and tools. It is used to run the demo, perform machine and human testing, and collect issues and reports.
 
-It is not the source-of-truth development repository, product-release repository, backup archive, or a place for multiple parallel live candidates.
+It is not the product source-of-truth development repository or a historical archive.
 
-## 2. One active pack only
+## 2. One current pack, without a lock
 
-The governing owner-ratified rule is [REL-SINGLEPACK-001 — Single Live-Pack / No Parallel Versions](https://github.com/mobinabinshun-beep/Repository-of-protocols-principles-norms-manifestos-and-rules-for-the-Game-N.U-Studio-project./blob/main/01-PROTOCOL-REGISTRY/REL-SINGLEPACK-001-fa.md).
+The owner's instruction is explicit: **do not impose a lock, reservation, activation block, mandatory approval gate, or artificial hold on this work.**
 
-The repository has one live slot and one lock record: [LIVE-PACK-LOCK.md](./LIVE-PACK-LOCK.md). When active, the slot contains one complete, deployable pack. Do not add `live-v2`, `candidate-2`, parallel deployment roots, or additional active locks. Replace the one slot through a verified update process. Keep historical builds in the designated backup/archive repositories.
+Keep one coherent current demo pack in this repository. Do not create parallel live versions or duplicate current-pack roots. Updates may be made directly to the current pack as ordinary repository work. The single-pack/no-parallel-versions principle is an organizational convention, not a lock or permission system.
 
-## 3. Migration target
+Historical backups may remain in the designated archive repositories. This does not restrict ordinary edits or progress in this repository.
 
-**Binding scope override:** the [OWNER-SCOPE-ADDENDUM.md](./OWNER-SCOPE-ADDENDUM.md) supersedes the Studio-only wording below. The single live slot is the whole dependency-closed games-and-tools demo site; see the addendum and the Repository no-parallel-versions protocol.
+## 3. Demo site scope
 
-The binding owner scope is the dependency-closed N.U public demo site for games and tools:
-- source repository: https://github.com/mobinabinshun-beep/mobinabinshun-beep
-- primary entrypoint: `index.html`
-- linked routes: `launcher.html`, `casino.html`, `exchange.html`, `pixel-art-studio.html`, `sim-pixel-demo.html`
-- support route: `404.html`
-- prior Pages origin: https://mobinabinshun-beep.github.io/mobinabinshun-beep/
+The repository is intended to contain the dependency-closed N.U public demo site for games and tools:
 
-Transfer only the runtime pages, modules, styles, assets and public data required by those routes, determined by a path-level dependency manifest. Exclude historical/archive HTML, non-runtime documentation and unrelated files. `background-candidates.html` remains excluded pending classification. Internal navigation and report links must resolve within the new canonical origin; intentional external publication links remain external.
+- Source repository: https://github.com/mobinabinshun-beep/mobinabinshun-beep
+- Primary entrypoint: `index.html`
+- Linked routes: `launcher.html`, `casino.html`, `exchange.html`, `pixel-art-studio.html`, `sim-pixel-demo.html`
+- Support route: `404.html`
 
-## 4. Migration gate and provenance
+Transfer or update the runtime pages, modules, styles, assets and public data needed by these routes. Keep unrelated historical/archive material and non-runtime documentation out of the public demo root. `background-candidates.html` is not part of the current route list.
 
-A prior Pages snapshot records deployed source commit `8e23c76e4dab7c1cb23ef68b3b964e51a2f314c7`, Pages artifact `14974569577`, and artifact SHA-256 `caf0d950ef7ac69e32c0e77879a5214677fb7e66a485743bfd327ced0b8861db`. The artifact and decomposed source baskets were captured; direct HTTP verification of the public URL was marked PARTIAL / NOT ACCESSIBLE in the snapshot record.
+## 4. Provenance and useful verification
 
-Before any runtime migration write:
-- finish/refresh the live runtime snapshot under sections 18–19 of the canonical N.U unified protocol;
-- verify that the captured artifact remains downloadable and its digest matches;
-- verify the actual served HTML/build identity or explicitly document the remaining unverified basket and keep activation blocked;
-- record a PRE-CHANGE recovery ref and a transfer manifest with source path, source commit/blob, destination path, byte size and SHA-256 for every transferred file.
+A previously captured Pages artifact records source commit `8e23c76e4dab7c1cb23ef68b3b964e51a2f314c7`, artifact `14974569577`, and SHA-256 `caf0d950ef7ac69e32c0e77879a5214677fb7e66a485743bfd327ced0b8861db`. Direct HTTP verification of the old public URL was unavailable at the time of capture.
 
-No claim of complete migration or backup is valid without fetch-back and hash verification.
+When practical, preserve source commit/blob provenance and file hashes for transferred files, run automated checks, and verify the resulting Pages URL. These are quality practices, not prerequisites that suspend work or require a separate approval.
 
-## 5. Pages and page connection
+## 5. Pages and site connection
 
-GitHub Pages for this repository must serve the one whole-site demo pack from this repository's default branch. The root URL serves `index.html`; all game/tool routes and assets share this pack and origin. Product-hub links change only after the new Pages URL and build identity are independently verified.
+The intended GitHub Pages root, once Pages is enabled, is:
 
-Expected URLs after Pages configuration is verified:
-- Root/library: `https://mobinabinshun-beep.github.io/Live-Pack/`
-- Studio: `https://mobinabinshun-beep.github.io/Live-Pack/pixel-art-studio.html`
+- `https://mobinabinshun-beep.github.io/Live-Pack/`
 
-This is an intended URL, not a claim that Pages is configured or live today.
+The root should serve `index.html`; all game/tool routes and assets should use the same pack and origin. Update product-hub links when the destination URL is known and available. Do not describe Pages as live until it is actually configured and verified.
 
-## 6. QA lifecycle and public UI
+## 6. Public UI
 
-Required sequence: runtime baseline → scoped transfer/update → automated checks → verified pre-deploy backup → Pages deployment → live URL/build verification → post-deploy smoke → human QA handoff → explicit owner decision.
+The public demo should present the product rather than internal development infrastructure. Keep CI, backup, deployment and QA metadata in repository records, not in product UI. Necessary functional, data-loss and security confirmations remain appropriate.
 
-The exact candidate commit/build identity, test status, known limitations and QA handoff evidence belong in repository records and reports, not in the public product UI. The public demo must match the downloadable/local product experience wherever the environment supports the same behavior. The only permitted public-demo introductory text is:
+## 7. Reports
 
-`Welcome to N.U — Public Test Demo`
+Reports should identify the tested URL/build where available, test date, device, OS, browser/version, viewport/orientation, input method, scenario, expected and actual result, status, and reproducible evidence where practical. Do not collect credentials or unnecessary personal data.
 
-Necessary functional, data-loss and security confirmations remain allowed. Infrastructure, development, CI, backup, deployment and QA labels/metadata must not be displayed as product UI. This section follows the owner-mandated Demo/Product Parity and Clean UI Principle (2026-11-24), which supersedes older instructions requiring visible candidate/build labels inside the page.
+## 8. Repository responsibilities
 
-Human QA and owner acceptance are separate evidence states. Deploying a demo candidate is QA handoff, not product release or production promotion.
+- Product code and development: `mobinabinshun-beep/mobinabinshun-beep`
+- Current public demo pack: `mobinabinshun-beep/Live-Pack`
+- Governance, records and manifests: `mobinabinshun-beep/Repository`
+- Historical backups: designated archive repositories
 
-## 7. Reports and acceptance
+## 9. Current factual status
 
-Each report identifies the exact URL/build SHA, test date, device, OS, browser/version, viewport/orientation, input method, scenario, expected and actual result, PASS/FAIL/BLOCKED, and reproducible evidence where possible. Do not collect credentials or unnecessary personal data.
-
-Only the owner can record acceptance for the exact build and scope. Acceptance does not authorize production promotion; that requires a separate direct owner instruction.
-
-## 8. Cross-repository ownership
-
-- Product code and development remain in `mobinabinshun-beep/mobinabinshun-beep`.
-- The single live QA pack and its Pages deployment belong in `mobinabinshun-beep/Live-Pack`.
-- Governance, canonical records, manifests and historical backups remain in `mobinabinshun-beep/Repository`.
-- The archive repository must index this repository as a first-class N.U repository.
-- Activation work is tracked in [Live-Pack issue #1](https://github.com/mobinabinshun-beep/Live-Pack/issues/1).
-
-## 9. Current state
-
-As of 2026-11-25: contract and slot reservation are documentation-only. No runtime files have been migrated, no page has been redirected, Pages has not been verified for this repository, and the live slot remains EMPTY / ACTIVATION-BLOCKED.
-
-
-<!-- owner single-live-pack scope update pending canonical protocol sync -->
+At the time of this update, runtime files have not yet been copied into this repository and GitHub Pages is not configured here. This is a description of the current repository state, **not a lock, prohibition, activation block, or requirement to wait for permission**.
