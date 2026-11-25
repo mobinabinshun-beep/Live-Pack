@@ -17,6 +17,8 @@ The repository has one live slot and one lock record: [LIVE-PACK-LOCK.md](./LIVE
 
 ## 3. Migration target
 
+**Binding scope override:** the [OWNER-SCOPE-ADDENDUM.md](./OWNER-SCOPE-ADDENDUM.md) supersedes the Studio-only wording below. The single live slot is the whole dependency-closed games-and-tools demo site; see the addendum and the Repository no-parallel-versions protocol.
+
 The first intended pack is the existing N.U Pixel Art Studio demo, currently sourced from:
 - source repository: https://github.com/mobinabinshun-beep/mobinabinshun-beep
 - entrypoint: `pixel-art-studio.html`
