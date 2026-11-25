@@ -1,29 +1,25 @@
 # N.U Live-Pack
 
-**Purpose:** the single current home of the N.U public demo site for all games and tools.
+**Purpose:** the one canonical runtime home for the dependency-closed N.U games-and-tools public demo and QA environment.
 
-This repository is the demo/test environment. Product development remains in the source repository; historical snapshots belong in the archive.
+## Current verified state
+- Runtime files in this repository: **none** (tree audit on 2026-11-25 found documentation files only).
+- GitHub Pages activation / served build identity: **NOT VERIFIED**.
+- Active running pack count: **0**.
+- This repository is not yet an executing live pack. Do not describe it as live until an exact deployment SHA is independently verified over HTTP.
 
-## Current factual status
+## Single-pack content rule
+Once populated, this repository contains only the one current dependency-closed runtime pack and files strictly required for that runtime. Do not add historical versions, backups, archives, manifests, reports, candidate copies, parallel roots or unrelated documentation here. Put canonical governance/manifest/report records in Repository and historical/version baskets in N.U-Game-Studio-Archive. Keep exactly one runtime root and one live deployment.
 
-- Runtime demo files: not yet transferred
-- GitHub Pages: not yet configured in this repository
-- Human QA handoff: not yet recorded
+The three existing governance files in this currently empty repository are bootstrap records retained until a verified runtime pack occupies the canonical root; they are not a second runtime or an invitation to add more documentation. Their historical pre-change versions are preserved in Archive.
 
-These are status facts only. **There is no lock, reservation, activation block, mandatory approval gate, or imposed hold on work in this repository.** Work may proceed directly in the current pack. Keep one coherent current pack rather than creating parallel live versions.
+## Sources and records
+- Product source: https://github.com/mobinabinshun-beep/mobinabinshun-beep
+- Canonical governance and operational records: https://github.com/mobinabinshun-beep/Repository
+- Historical archive: https://github.com/mobinabinshun-beep/N.U-Game-Studio-Archive
+- Mandatory pre-write rule: https://github.com/mobinabinshun-beep/Repository/blob/main/Governance/NU-MANDATORY-OPERATION-DOCUMENTATION-AND-ARCHIVE-GATE-fa.md
+- Live-Pack dependency audit: https://github.com/mobinabinshun-beep/Repository/blob/main/Operations/2026-11-25/NU-LIVE-PACK-SECOND-PASS-DEPENDENCY-AND-BASELINE-DIFF-2026-11-25-fa.md
+- Human review/test/approval queue: https://github.com/mobinabinshun-beep/Repository/issues/72
 
-## Scope
-
-- Primary entrypoint: `index.html`
-- Routes: `launcher.html`, `casino.html`, `exchange.html`, `pixel-art-studio.html`, `sim-pixel-demo.html`
-- Support route: `404.html`
-
-## References
-
-- [Operating agreement](./LIVE-PACK-CONTRACT.md)
-- [Owner scope addendum](./OWNER-SCOPE-ADDENDUM.md)
-- [Product source repository](https://github.com/mobinabinshun-beep/mobinabinshun-beep)
-- [Repository records](https://github.com/mobinabinshun-beep/Repository)
-- [Historical archive](https://github.com/mobinabinshun-beep/N.U-Game-Studio-Archive)
-
-The single-current-pack/no-parallel-versions principle is organizational guidance only; it is not a lock or a deployment permission mechanism.
+## Activation status
+The current source audit has unresolved gates, including the missing exact owner-supplied `assets/nu-celestial-city.png`, full transitive/dynamic dependency manifest, service-worker validation, candidate backup and independent browser tests. No runtime transfer, Pages activation, redirect or owner acceptance is claimed.
