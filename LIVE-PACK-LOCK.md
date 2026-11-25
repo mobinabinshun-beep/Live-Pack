@@ -19,7 +19,7 @@ Do not populate or deploy the live slot until all are evidenced:
 1. Exact currently served demo identity is verified against the Pages deployment and HTTP response; all runtime snapshot baskets are captured or explicitly dispositioned under the canonical sections 18–19 protocol.
 2. The exact deployed pack and all required assets/dependencies are recoverable and hash-verified.
 3. The source-to-Live-Pack transfer is complete with explicit provenance and no unrelated product changes.
-4. The Studio entrypoint, relative assets, navigation and report links resolve within the new deployment.
+4. All whole-demo entrypoints (index/library, Launcher, Casino, Exchange, Pixel Art Studio, SIM PIXEL and support routes), relative assets, navigation, state flows and report links resolve within the same deployment SHA and origin.
 5. Required automated checks pass on one exact commit.
 6. An exact pre-deploy backup is verified.
 7. The new Pages deployment is live and its served build identity is independently verified.
