@@ -13,6 +13,8 @@ It is not the source-of-truth development repository, product-release repository
 
 ## 2. One active pack only
 
+The governing owner-ratified rule is [REL-SINGLEPACK-001 — Single Live-Pack / No Parallel Versions](https://github.com/mobinabinshun-beep/Repository-of-protocols-principles-norms-manifestos-and-rules-for-the-Game-N.U-Studio-project./blob/main/01-PROTOCOL-REGISTRY/REL-SINGLEPACK-001-fa.md).
+
 The repository has one live slot and one lock record: [LIVE-PACK-LOCK.md](./LIVE-PACK-LOCK.md). When active, the slot contains one complete, deployable pack. Do not add `live-v2`, `candidate-2`, parallel deployment roots, or additional active locks. Replace the one slot through a verified update process. Keep historical builds in the designated backup/archive repositories.
 
 ## 3. Migration target
