@@ -1,6 +1,6 @@
 # N.U Live-Pack
 
-**Purpose:** the single canonical home of the one currently active public demo pack (the live QA environment).
+**Purpose:** the single canonical home of the one dependency-closed public demo site for all N.U games and tools, as clarified by the owner scope addendum.
 
 This repository is not a product-release channel and not a historical archive. Its one live slot is reserved for the current demo used for execution, machine testing, human testing, issue/report collection and explicit owner acceptance.
 
@@ -16,6 +16,7 @@ This repository is not a product-release channel and not a historical archive. I
 
 - [Single Live-Pack contract](./LIVE-PACK-CONTRACT.md)
 - [The one and only Live-Pack lock](./LIVE-PACK-LOCK.md)
+- [Owner scope addendum — whole N.U games and tools demo site](./OWNER-SCOPE-ADDENDUM.md)
 
 ## Source and intended entry point
 
