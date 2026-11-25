@@ -1,0 +1,69 @@
+# N.U Live-Pack — operating contract
+
+## 1. Single purpose
+
+`Live-Pack` is the sole repository for the one currently active N.U public demo pack. It is the live laboratory for:
+- running the current demo;
+- machine smoke/regression checks;
+- human testing by the owner and invited testers;
+- issue, defect and test-report intake;
+- recording exact-build human results and owner acceptance.
+
+It is not the source-of-truth development repository, product-release repository, backup archive, or a place for multiple parallel live candidates.
+
+## 2. One active pack only
+
+The repository has one live slot and one lock record: [LIVE-PACK-LOCK.md](./LIVE-PACK-LOCK.md). When active, the slot contains one complete, deployable pack. Do not add `live-v2`, `candidate-2`, parallel deployment roots, or additional active locks. Replace the one slot through a verified update process. Keep historical builds in the designated backup/archive repositories.
+
+## 3. Migration target
+
+The first intended pack is the existing N.U Pixel Art Studio demo, currently sourced from:
+- source repository: https://github.com/mobinabinshun-beep/mobinabinshun-beep
+- entrypoint: `pixel-art-studio.html`
+- prior Pages URL: https://mobinabinshun-beep.github.io/mobinabinshun-beep/pixel-art-studio.html
+
+The source entrypoint depends on local runtime modules, styles and the main N.U page for one navigation link. The migration must inventory and transfer only the Studio entrypoint plus its proven runtime dependencies/assets, and must update internal navigation and test/report links to the new canonical location. Do not copy the entire product website or unrelated modules into this repository.
+
+## 4. Migration gate and provenance
+
+A prior Pages snapshot records deployed source commit `8e23c76e4dab7c1cb23ef68b3b964e51a2f314c7`, Pages artifact `14974569577`, and artifact SHA-256 `caf0d950ef7ac69e32c0e77879a5214677fb7e66a485743bfd327ced0b8861db`. The artifact and decomposed source baskets were captured; direct HTTP verification of the public URL was marked PARTIAL / NOT ACCESSIBLE in the snapshot record.
+
+Before any runtime migration write:
+- finish/refresh the live runtime snapshot under sections 18–19 of the canonical N.U unified protocol;
+- verify that the captured artifact remains downloadable and its digest matches;
+- verify the actual served HTML/build identity or explicitly document the remaining unverified basket and keep activation blocked;
+- record a PRE-CHANGE recovery ref and a transfer manifest with source path, source commit/blob, destination path, byte size and SHA-256 for every transferred file.
+
+No claim of complete migration or backup is valid without fetch-back and hash verification.
+
+## 5. Pages and page connection
+
+GitHub Pages for this repository must serve the single Studio pack from this repository's default branch. The old Studio link in the product hub must be changed only after the new URL is live and verified. The product hub remains the broader N.U source repository; this repository owns only the active QA demo pack.
+
+Expected URL after Pages configuration is verified:
+`https://mobinabinshun-beep.github.io/Live-Pack/pixel-art-studio.html`
+
+This is an intended URL, not a claim that Pages is configured or live today.
+
+## 6. QA lifecycle
+
+Required sequence: runtime baseline → scoped transfer/update → automated checks → verified pre-deploy backup → Pages deployment → live URL/build verification → post-deploy smoke → human QA handoff → explicit owner decision.
+
+The demo must visibly identify an unaccepted candidate as `TEST CANDIDATE — NOT HUMAN-APPROVED` with its exact build/commit and known limitations. The demo is not a product release. Human QA and owner acceptance are separate evidence states.
+
+## 7. Reports and acceptance
+
+Each report identifies the exact URL/build SHA, test date, device, OS, browser/version, viewport/orientation, input method, scenario, expected and actual result, PASS/FAIL/BLOCKED, and reproducible evidence where possible. Do not collect credentials or unnecessary personal data.
+
+Only the owner can record acceptance for the exact build and scope. Acceptance does not authorize production promotion; that requires a separate direct owner instruction.
+
+## 8. Cross-repository ownership
+
+- Product code and development remain in `mobinabinshun-beep/mobinabinshun-beep`.
+- The single live QA pack and its Pages deployment belong in `mobinabinshun-beep/Live-Pack`.
+- Governance, canonical records, manifests and historical backups remain in `mobinabinshun-beep/Repository`.
+- The archive repository must index this repository as a first-class N.U repository.
+
+## 9. Current state
+
+As of 2026-11-25: contract and slot reservation are documentation-only. No runtime files have been migrated, no page has been redirected, Pages has not been verified for this repository, and the live slot remains EMPTY / ACTIVATION-BLOCKED.
