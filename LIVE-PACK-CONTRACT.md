@@ -1,59 +1,39 @@
-# N.U Live-Pack — operating agreement
+# N.U Live-Pack — runtime-only operating contract
 
-## 1. Purpose
+## 1. Purpose and sole slot
+`mobinabinshun-beep/Live-Pack` is the only repository/root for the one current, dependency-closed N.U games-and-tools public demo and QA runtime. Product development remains in the product source repository. Historical versions and evidence belong in the Archive; governance, manifests, operation records and QA reports belong in Repository.
 
-`Live-Pack` is the single home for the current N.U public demo site covering all games and tools. It is used to run the demo, perform machine and human testing, and collect issues and reports.
+## 2. Runtime-only repository content
+When active, the Live-Pack runtime root must contain only files required to execute the single current site: entrypoints, transitive modules, styles, assets, public data and strictly required runtime health/service-worker resources. No backup, old version, alternate candidate root, archive, report, manifest, historical HTML, unrelated document or second deployment may be added. No parallel live-v2/candidate root is allowed.
 
-It is not the product source-of-truth development repository or a historical archive.
+The existing three governance documents are bootstrap records retained while the repository is empty; they are not runtime content. Once a verified runtime pack replaces this bootstrap state, repository governance remains canonical in Repository and historical snapshots in Archive.
 
-## 2. One current pack, without a lock
+## 3. Mandatory pre-write rule
+No state-changing action may occur until the owner request and conversation context, purpose, authority, rationale, exact scope, exclusions, dependencies, risks, acceptance criteria and recovery method are recorded. The exact pre-change state must be captured and archived separately with provenance, per-file/config manifest, byte sizes and hashes, then fetched back and verified. The resulting operation record and after-state evidence must also be archived.
 
-The owner's instruction is explicit: **do not impose a lock, reservation, activation block, mandatory approval gate, or artificial hold on this work.**
+The canonical rule is [NU-MANDATORY-OPERATION-DOCUMENTATION-AND-ARCHIVE-GATE](https://github.com/mobinabinshun-beep/Repository/blob/main/Governance/NU-MANDATORY-OPERATION-DOCUMENTATION-AND-ARCHIVE-GATE-fa.md). This is a machine responsibility and a necessary prerequisite for MACHINE-PASS/MACHINE-APPROVED. If any required record, archive, recovery point or evidence is unavailable, status is BLOCKED and no write/deploy is allowed.
 
-Keep one coherent current demo pack in this repository. Do not create parallel live versions or duplicate current-pack roots. Updates may be made directly to the current pack as ordinary repository work. The single-pack/no-parallel-versions principle is an organizational convention, not a lock or permission system.
+## 4. One-pack lifecycle
+1. Read applicable governance, source history, issues/PRs, previous reports, current runtime and artifacts.
+2. Capture the actually served baseline; distinguish it from current source HEAD and old artifacts.
+3. Decompose each prior version into independent baskets (routes, modules, styles, assets, data, service worker, health/report resources) and archive each basket with provenance and manifest. Do not merge different revisions into one ambiguous backup.
+4. Complete a dependency-closed manifest for the entire site and resolve every missing/uncertain dependency.
+5. Populate only the single canonical Live-Pack root with the selected pack; fetch back and verify every file.
+6. Run focused, integration, browser, cross-route and service-worker tests against one exact commit.
+7. Archive and verify the exact candidate before deployment.
+8. Deploy only that candidate to the single Pages slot; independently verify HTTP served identity, routes and assets.
+9. Record exact-build human QA handoff and keep human acceptance distinct from machine results.
 
-Historical backups may remain in the designated archive repositories. This does not restrict ordinary edits or progress in this repository.
+## 5. Current verified status (2026-11-25)
+- No runtime pack is currently present in this repository.
+- The current source audit reports a missing `assets/nu-celestial-city.png` path required by `nu-background-engine.js`; do not substitute another image without explicit owner decision.
+- Root README is a runtime health dependency; Exchange service-worker precache and scope need complete validation.
+- Full dynamic dependency/report-intake manifest and independent browser/network tests remain open.
+- Previous Pages artifact SHA-256 integrity was verified, but public HTTP served identity was not.
+- Therefore active pack count is 0; no transfer, Pages activation, deployment, redirect or owner acceptance is claimed.
 
-## 3. Demo site scope
+## 6. Public UI and data
+The public UI must present the product, not internal infrastructure. Keep build, backup, CI and QA records outside the runtime UI. Do not copy personal localStorage, saves, private projects, credentials, tokens or tester personal data into GitHub.
 
-The repository is intended to contain the dependency-closed N.U public demo site for games and tools:
-
-- Source repository: https://github.com/mobinabinshun-beep/mobinabinshun-beep
-- Primary entrypoint: `index.html`
-- Linked routes: `launcher.html`, `casino.html`, `exchange.html`, `pixel-art-studio.html`, `sim-pixel-demo.html`
-- Support route: `404.html`
-
-Transfer or update the runtime pages, modules, styles, assets and public data needed by these routes. Keep unrelated historical/archive material and non-runtime documentation out of the public demo root. `background-candidates.html` is not part of the current route list.
-
-## 4. Provenance and useful verification
-
-A previously captured Pages artifact records source commit `8e23c76e4dab7c1cb23ef68b3b964e51a2f314c7`, artifact `14974569577`, and SHA-256 `caf0d950ef7ac69e32c0e77879a5214677fb7e66a485743bfd327ced0b8861db`. Direct HTTP verification of the old public URL was unavailable at the time of capture.
-
-When practical, preserve source commit/blob provenance and file hashes for transferred files, run automated checks, and verify the resulting Pages URL. These are quality practices, not prerequisites that suspend work or require a separate approval.
-
-## 5. Pages and site connection
-
-The intended GitHub Pages root, once Pages is enabled, is:
-
-- `https://mobinabinshun-beep.github.io/Live-Pack/`
-
-The root should serve `index.html`; all game/tool routes and assets should use the same pack and origin. Update product-hub links when the destination URL is known and available. Do not describe Pages as live until it is actually configured and verified.
-
-## 6. Public UI
-
-The public demo should present the product rather than internal development infrastructure. Keep CI, backup, deployment and QA metadata in repository records, not in product UI. Necessary functional, data-loss and security confirmations remain appropriate.
-
-## 7. Reports
-
-Reports should identify the tested URL/build where available, test date, device, OS, browser/version, viewport/orientation, input method, scenario, expected and actual result, status, and reproducible evidence where practical. Do not collect credentials or unnecessary personal data.
-
-## 8. Repository responsibilities
-
-- Product code and development: `mobinabinshun-beep/mobinabinshun-beep`
-- Current public demo pack: `mobinabinshun-beep/Live-Pack`
-- Governance, records and manifests: `mobinabinshun-beep/Repository`
-- Historical backups: designated archive repositories
-
-## 9. Current factual status
-
-At the time of this update, runtime files have not yet been copied into this repository and GitHub Pages is not configured here. This is a description of the current repository state, **not a lock, prohibition, activation block, or requirement to wait for permission**.
+## 7. Status vocabulary
+Use separate states for IMPLEMENTED, ARCHIVE-READBACK-VERIFIED, SHA256-VERIFIED, RESTORE-TESTED, MACHINE-QA-PASSED/FAILED, DEPLOYMENT-VERIFIED/UNVERIFIED, HUMAN-QA-PENDING/PASSED/FAILED and OWNER-APPROVED/REJECTED. No state implies another.
