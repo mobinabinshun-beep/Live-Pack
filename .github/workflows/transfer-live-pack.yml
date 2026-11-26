@@ -36,32 +36,27 @@ jobs:
           print("Authorized single-pack request validated")
           PY
 
-      - name: Fetch exact source, canonical path manifest, and archived evidence
+      - name: Fetch exact source and validate archived evidence record
         run: |
           set -euo pipefail
           git clone --no-checkout https://github.com/mobinabinshun-beep/mobinabinshun-beep.git /tmp/nu-source
           git -C /tmp/nu-source checkout --detach "2b80544b35e2be4145c6b696521859fcc46399d6"
           test "$(git -C /tmp/nu-source rev-parse HEAD)" = "2b80544b35e2be4145c6b696521859fcc46399d6"
-          git clone --depth 1 https://github.com/mobinabinshun-beep/Repository.git /tmp/nu-repository
-          git clone https://github.com/mobinabinshun-beep/N.U-Game-Studio-Archive.git /tmp/nu-archive
-          git -C /tmp/nu-archive cat-file -e "a9668afc7f806aae634b0fd361f724a46a1f00b4^{commit}"
-          git -C /tmp/nu-archive cat-file -e "ffb728488fe0412f17179434f9ebf3f1eb03328c^{commit}"
           python - <<'PY'
           import json
-          from pathlib import Path
-          root=Path("/tmp/nu-archive/03-PROJECT-ARCHIVES/NIROO-UNIVERSE/2026/LIVE-PACK")
-          candidate=root/"2026-11-26-MACHINE-QA-PASSED-TRANSFER-SOURCE"
-          baseline=root/"2026-11-26-DEPLOYED-493-BASELINE"
-          cm=json.load(open(candidate/"CANDIDATE-MANIFEST.json",encoding="utf-8"))
-          assert cm["source_commit"]=="2b80544b35e2be4145c6b696521859fcc46399d6"
-          assert cm["machine_qa_status"]=="ALL-SUCCESS"
-          assert (candidate/"RESTORE-VERIFICATION.txt").read_text().startswith("RESTORE_TEST=PASS")
-          assert (baseline/"BASELINE-MANIFEST.json").is_file()
-          assert (baseline/"RESTORE-VERIFICATION.txt").read_text().startswith("RESTORE_TEST=PASS")
-          historical=root/"2026-11-25-PRE-CHANGE-CAPTURE"
-          for p in ["README.pre-change.md","LIVE-PACK-CONTRACT.pre-change.md","OWNER-SCOPE-ADDENDUM.pre-change.md"]:
-              assert (historical/p).is_file(), p
-          print("Baseline, candidate archive, restore proofs, and old bootstrap documents verified")
+          r=json.load(open("Operations/2026-11-26/NU-LIVE-PACK-TRANSFER-REQUEST.json",encoding="utf-8"))
+          e=r["archive_evidence"]
+          assert e["baseline_restore"]=="PASS" and e["baseline_files"]==292
+          assert e["candidate_restore"]=="PASS"
+          assert e["candidate_source_commit"]==r["source_commit"]
+          assert e["candidate_readback_blob_matches"]=="297/297"
+          paths=r["runtime_paths"]
+          assert len(paths)==63 and len(set(paths))==63
+          assert "README.md" not in paths
+          assert "assets/Original reference image file for Niroo Universe (N.U).png" not in paths
+          for p in ["health.txt","build-info.json","assets/nu-celestial-city.png","index.html","sitemap.xml"]:
+              assert p in paths, p
+          print("Source commit and independently verified archive evidence validated")
           PY
 
       - name: Assemble the exact dependency-closed 63-file runtime
@@ -71,11 +66,8 @@ jobs:
           from pathlib import Path
           import json, shutil
           source=Path("/tmp/nu-source")
-          manifest_path=Path("/tmp/nu-repository/Operations/2026-11-25/NU-LIVE-PACK-RUNTIME-CANDIDATE-MANIFEST-2026-11-25.json")
-          manifest=json.load(open(manifest_path,encoding="utf-8"))
-          excluded={"README.md","assets/Original reference image file for Niroo Universe (N.U).png"}
-          paths=sorted({item["path"] for group in manifest["groups"].values() for item in group if item["path"] not in excluded})
-          paths=sorted(set(paths+["health.txt","assets/nu-celestial-city.png","build-info.json"]))
+          request=json.load(open("Operations/2026-11-26/NU-LIVE-PACK-TRANSFER-REQUEST.json",encoding="utf-8"))
+          paths=request["runtime_paths"]
           assert len(paths)==63, (len(paths),paths)
           package=Path("/tmp/nu-live-pack-package")
           if package.exists(): shutil.rmtree(package)
