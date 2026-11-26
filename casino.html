@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>N.U Casino — Generation 1</title>
+<meta name="description" content="Three N.U mini-games using local virtual wallet assets only.">
+<meta name="theme-color" content="#071018">
+<link rel="stylesheet" href="./nu-casino.css?v=20261115-wallet-ladder-r1">
+<link rel="stylesheet" href="./nu-hex-gateway.css?v=20261118-directional-r2">
+</head>
+<body>
+<main class="casino-shell">
+<header class="casino-top"><a class="back-link" href="./index.html">← N.U WORLD</a><span class="eyebrow">GENERATION 01 · PLAYABLE MINI-GAMES</span></header>
+<section class="casino-hero">
+<p class="eyebrow">N.U ENTERTAINMENT DECK</p><h1>THE MINI<br><em>CASINO</em></h1>
+<p>Three quick games. Place virtual bets using spendable assets already held in your N.U Wallet. No deposits, payments, cash prizes or cash-out.</p>
+<div class="balance-panel"><span id="casino-balance-label">SELECTED WALLET BALANCE</span><strong id="casino-balance" aria-live="polite">—</strong><small id="casino-balance-unit">LOCAL WALLET · NO MONETARY VALUE</small></div>
+<section class="casino-bet-panel" aria-label="Wallet betting controls">
+<label class="bet-field" for="casino-currency">BET CURRENCY<select id="casino-currency"></select></label>
+<div class="bet-field stake-field"><label for="casino-stake">BASE WAGER <strong id="casino-stake-label">1</strong></label><div class="stake-inputs"><input id="casino-stake" type="range" min="1" max="100" step="1" value="1"><input id="casino-stake-number" type="number" min="1" max="100" step="1" value="1" inputmode="numeric"></div></div>
+<div class="ladder-panel"><span class="ladder-title">DOUBLE-UP BETTING LADDER</span><div class="ladder-steps"><span data-ladder-step="0" class="is-current">1×</span><span data-ladder-step="1">2×</span><span data-ladder-step="2">4×</span><span data-ladder-step="3">8×</span></div><p>Current wager: <strong id="casino-effective-stake">1</strong> <span id="casino-effective-unit">units</span>. A loss advances one step; a win or break-even resets to 1×. Leaving the casino resets the ladder.</p></div>
+</section>
+</section>
+<section class="game-grid" aria-label="Casino mini-games">
+<article class="game-card">
+<div class="game-icon">◐</div><span class="game-kicker">01 / 50–50</span><h2>Coin Flip</h2><p>Call Heads or Tails. A correct call returns twice your wager.</p>
+<div class="choice-row"><button class="choice active" data-coin="heads" aria-pressed="true">HEADS</button><button class="choice" data-coin="tails" aria-pressed="false">TAILS</button></div>
+<div class="result-display" id="coin-result" aria-live="polite">Ready to flip?</div><button class="play-button" id="coin-play">FLIP COIN</button>
+</article>
+<article class="game-card">
+<div class="game-icon">⚄</div><span class="game-kicker">02 / SIX SIDES</span><h2>Lucky Dice</h2><p>Choose one number. Match the roll to receive five times your wager.</p>
+<label class="guess-control" for="dice-guess">YOUR NUMBER<select id="dice-guess"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select></label>
+<div class="result-display" id="dice-result" aria-live="polite">Pick a number.</div><button class="play-button" id="dice-play">ROLL DICE</button>
+</article>
+<article class="game-card">
+<div class="game-icon">🎰</div><span class="game-kicker">03 / THREE REELS</span><h2>Mini Slots</h2><p>Spin three symbols. Three alike pays 8×; a pair pays 2×.</p>
+<div class="reels" id="slot-reels" aria-label="Slot symbols"><span>🍒</span><span>⭐</span><span>🔔</span></div>
+<div class="result-display" id="slot-result" aria-live="polite">Ready to spin?</div><button class="play-button" id="slot-play">SPIN REELS</button>
+</article>
+</section>
+<section class="casino-foot"><p id="casino-status" role="status" aria-live="polite">Choose a game and wallet currency to begin. All bets are local demo transactions with no monetary value.</p><a href="./index.html">RETURN TO NIROO UNIVERSE ↗</a></section>
+</main>
+<script src="./nu-engine.js"></script><script src="./nu-wallet.js?v=20261115-wallet-bet-r1"></script><script src="./nu-casino.js?v=20261115-wallet-ladder-r1"></script>
+<div class="nu-gateway-scrim" aria-hidden="true"></div>
+<nav id="nu-hex-gateway" aria-label="N.U quick navigation">
+  <button class="nu-gateway-trigger" type="button" aria-expanded="false" aria-label="Open N.U navigation gateway">
+    <svg viewBox="0 0 58 58" role="img" aria-hidden="true"><polygon class="hex-core" points="16,3 42,3 55,29 42,55 16,55 3,29"/><polygon class="hex-inner" points="18,9 40,9 49,29 40,49 18,49 9,29"/><text class="hex-mark" x="29" y="32" text-anchor="middle">N.U</text></svg>
+  </button>
+  <span class="nu-gateway-hint">MOVE TO NAVIGATE · TAP TO ENTER</span>
+  <div class="nu-gateway-items">
+    <button class="nu-gateway-item" type="button" data-action="back"><span>BACK<br>HOME</span></button>
+    <button class="nu-gateway-item" type="button" data-action="library"><span>GAME<br>LIBRARY</span></button>
+    <button class="nu-gateway-item" type="button" data-action="store"><span>N.U<br>STORE</span></button>
+    <button class="nu-gateway-item" type="button" data-action="wallet"><span>WALLET</span></button>
+    <button class="nu-gateway-item" type="button" data-action="profile"><span>PLAYER<br>PROFILE</span></button>
+    <button class="nu-gateway-item" type="button" data-action="launcher"><span>LAUNCHER<br>SETTINGS</span></button>
+    <button class="nu-gateway-item" type="button" data-action="studio"><span>CREATIVE<br>STUDIO</span></button>
+    <button class="nu-gateway-item" type="button" data-action="casino"><span>N.U<br>CASINO</span></button>
+    <button class="nu-gateway-item" type="button" data-action="resume"><span>RETURN<br>TO GAME</span></button>
+  </div>
+</nav>
+<script src="./nu-interaction-core.js?v=20261119-core-r1"></script>
+  <script src="./nu-controller-pointer.js?v=20261121-independent-r1"></script>
+<script src="./nu-hex-gateway.js?v=20261121-touch-tap-r2"></script>
+</body></html>

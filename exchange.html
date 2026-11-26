@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>N.U Virtual Market — Generation 1</title>
+<meta name="description" content="A fictional N.U market simulator with recorded player activity and clearly labelled local background simulation.">
+<meta name="theme-color" content="#071018">
+<link rel="stylesheet" href="./nu-exchange.css?v=20261115-ambient-drawing-r1">
+</head>
+<body>
+<main class="exchange-shell">
+<header class="exchange-top"><a href="./index.html" class="back-link">← N.U WORLD</a><span class="eyebrow">GENERATION 01 · FICTIONAL GAME ECONOMY</span></header>
+<section class="exchange-hero">
+<p class="eyebrow">N.U ECONOMY SYSTEM</p><h1>VIRTUAL <em>MARKET</em></h1>
+<p>A fictional market simulation with trading-style charts. Recorded player activity is shown separately from clearly labelled local background flow. No real trades or wallet changes occur.</p>
+<div class="exchange-notice">100% FICTIONAL · N.U ACTIVITY ONLY · NO REAL-WORLD DATA OR VALUE</div>
+</section>
+<section class="market-panel">
+<div class="panel-heading"><div><p class="eyebrow">ACTIVITY-DRIVEN SIMULATION</p><h2>MARKET INDEX</h2></div><span class="sim-tag">SIMULATED · NOT A REAL PRICE</span></div>
+<div class="market-controls"><label for="market-asset">SELECT VIRTUAL ASSET</label><select id="market-asset"></select><span id="market-events">0 RECORDED · SIMULATION ACTIVE</span><label for="chart-time-scale">REPLAY PERIOD</label><select id="chart-time-scale"></select></div>
+<div class="market-summary">
+<article class="exchange-card"><span>NU INDEX</span><strong id="market-index">100.00</strong></article>
+<article class="exchange-card"><span>CHANGE FROM BASELINE</span><strong id="market-change">0.00%</strong></article>
+<article class="exchange-card"><span>DISPLAY VOLUME · SIMULATED</span><strong id="market-volume">0</strong></article>
+<article class="exchange-card"><span>SIMULATED DEMAND</span><strong id="market-demand">0</strong></article>
+<article class="exchange-card"><span>SIMULATED SUPPLY</span><strong id="market-supply">0</strong></article><article class="exchange-card behavior-card"><span>PLAYER ACTIVITY TENDENCY</span><strong id="market-bias" class="bias-indicator">BALANCED</strong></article>
+</div>
+<div class="chart-legend"><span><i class="legend-up"></i> Index rising</span><span><i class="legend-down"></i> Index falling</span><span>PLAYER HISTORY + SIMULATED BACKGROUND FLOW</span><span id="replay-mode-label">SAVED ACTIVITY + BACKGROUND SIMULATION</span><span id="replay-progress">0 VISIBLE</span></div>
+<div class="chart-tools" aria-label="Chart display controls">
+ <label class="chart-range-control" for="chart-zoom">ZOOM / HISTORY <input id="chart-zoom" type="range" min="4" max="24" step="1" value="24"><output id="chart-zoom-value" for="chart-zoom">24</output></label>
+ <label for="chart-theme">MODE <select id="chart-theme"><option value="night">Night</option><option value="day">Day</option></select></label>
+ <label for="chart-palette">COLOR PACK <select id="chart-palette"><option value="aurora">Aurora</option><option value="emerald">Emerald</option><option value="rose">Rose</option><option value="amber">Amber</option><option value="mono">Monochrome</option></select></label>
+ <label for="chart-average-period">AVERAGE PERIOD <select id="chart-average-period"><option value="3">Short</option><option value="5" selected>Medium</option><option value="8">Long</option><option value="12">Extended</option></select></label>
+ <label class="chart-toggle"><input id="chart-grid-toggle" type="checkbox" checked> Grid</label>
+ <label class="chart-toggle"><input id="chart-wicks-toggle" type="checkbox" checked> Candle shadows</label>
+ <label class="chart-toggle"><input id="chart-volume-toggle" type="checkbox" checked> Volume</label>
+ <label class="chart-toggle"><input id="chart-average-toggle" type="checkbox" checked> Analysis line</label>
+ <label class="chart-toggle"><input id="chart-bands-toggle" type="checkbox" checked> Parametric bands</label>
+ <label class="chart-toggle"><input id="chart-tolerance-toggle" type="checkbox" checked> Visual tolerance ±5</label>
+</div>
+<div id="chart-drawing-tools" class="chart-drawing-tools" aria-label="Chart drawing and analysis tools">
+ <span class="drawing-tools-label">DRAW ON CHART</span>
+ <button type="button" data-draw-tool="cursor" aria-pressed="true" class="is-active">Cursor</button>
+ <button type="button" data-draw-tool="trend" aria-pressed="false">Trend line</button>
+ <button type="button" data-draw-tool="horizontal" aria-pressed="false">Horizontal</button>
+ <button type="button" data-draw-tool="vertical" aria-pressed="false">Vertical</button>
+ <button type="button" data-draw-tool="zone" aria-pressed="false">Shaded zone</button>
+ <button type="button" data-draw-action="undo">Undo</button>
+ <button type="button" data-draw-action="clear">Clear</button>
+ <small data-ambient-status>BACKGROUND FLOW · LOCAL SIMULATION · MAX 3 UNITS · VISUAL ONLY</small>
+</div>
+<canvas id="market-chart" role="img" aria-label="Fictional N.U market index candlestick chart"></canvas>
+<div id="market-empty" class="chart-empty">Background candles are active as a display-only simulation. Recorded player activity will appear separately when it occurs.</div>
+<div class="panel-heading"><div><p class="eyebrow">LIVE CALCULATIONS · SAME CHART DATA</p><h2>MARKET INDICATORS</h2></div><span>SIMULATED + RECORDED TAPE</span></div><div id="market-indicators" class="exchange-summary"></div><p class="panel-note">SMA 5, EMA 12, RSI 14, MACD and two-standard-deviation bands are recalculated from the exact candles shown above. These are descriptive indicators, not financial advice or trade signals.</p><div class="panel-heading"><div><p class="eyebrow">CHRONOLOGICAL EVENT STREAM</p><h2>MARKET TIMELINE</h2></div><span id="timeline-count">0 EVENTS</span></div><div id="market-timeline" class="asset-transactions"></div><div class="panel-heading"><div><p class="eyebrow">LAST FIVE RECORDED STEPS</p><h2>PLAYER MARKET HISTORY</h2></div><span>LOCAL ACTIVITY ONLY</span></div><div id="market-history" class="asset-transactions"></div><p class="panel-note">Recorded player activity remains separate from simulated background candles and volume. Background movement is fictional, locally generated, and never represents real players, real trades, a shared order book, or wallet transactions. It never changes balances or saved transaction history.</p>
+</section>
+<section class="exchange-panel">
+<div class="panel-heading"><div><p class="eyebrow">YOUR WALLET · SINGLE-PLAYER LOCAL BALANCE</p><h2>ASSET BALANCE HISTORY</h2></div><span id="history-count">0 RECORDS</span></div>
+<div class="exchange-summary">
+<article class="exchange-card"><span>SELECT ASSET</span><label class="sr-only" for="asset-select">Select asset</label><select id="asset-select"></select></article>
+<article class="exchange-card"><span>CURRENT BALANCE</span><strong id="asset-balance">—</strong></article>
+<article class="exchange-card"><span>NET CHANGE IN HISTORY</span><strong id="asset-change">—</strong></article>
+</div>
+<p class="panel-note">This separate chart reconstructs your own local wallet balance. It is not the simulated market index.</p>
+<canvas id="asset-chart" role="img" aria-label="Selected asset balance history chart"></canvas>
+<div id="chart-empty" class="chart-empty" hidden>No recorded changes for this asset yet. The current balance is shown above.</div>
+</section>
+<section class="exchange-panel audit-trail-panel" aria-label="Wallet audit trail">
+<div class="panel-heading"><div><p class="eyebrow">AUDIT TRAIL</p><h2>RECENT ASSET MOVEMENTS</h2></div><span>LOCAL SAVE</span></div><p id="exchange-offline-status" class="panel-note" role="status">OFFLINE CACHE · CHECKING</p>
+<div id="asset-transactions" class="asset-transactions" aria-live="polite"></div>
+<div class="wallet-audit-subsection">
+<div class="panel-heading"><div><p class="eyebrow">CANONICAL PLAYER WALLET · SAME WALLET · NO COPIED BALANCE</p><h2>PLAYER PROFILE &amp; OWNED ASSETS</h2></div><span class="sim-tag">READ ONLY · LOCAL SAVE</span></div>
+<div id="wallet-connection" aria-live="polite"><p class="panel-note">Connecting to the existing N.U wallet…</p></div>
+<p class="panel-note">This audit view reads the same canonical local player save used by the game. No shadow wallet, copied balance, simulated transaction, or cross-game settlement is created here. X/N Credits remain unpriced until reviewed.</p>
+</div>
+</section>
+<section class="exchange-panel conversion-panel">
+<div class="panel-heading"><div><p class="eyebrow">MODULAR CROSS-GAME CHANGE</p><h2>GAME-TO-GAME ASSET TRANSFER</h2></div><span id="exchange-lock-status" class="pending-tag">TRANSFER MODULE LOCKED</span></div>
+<p>This module is prepared for Launcher game adapters. Only a compatible asset transfer from one implemented N.U game to another may be supported. No standalone coin swap, outside rate, or real-money conversion is provided.</p>
+<div class="exchange-summary change-grid">
+ <article class="exchange-card"><span>SOURCE GAME</span><select id="change-from" aria-label="Source game"></select></article>
+ <article class="exchange-card"><span>DESTINATION GAME</span><select id="change-to" aria-label="Destination game"></select></article>
+ <article class="exchange-card"><span>SHARED COIN</span><select id="change-coin" aria-label="Transfer coin"></select></article><article class="exchange-card"><span>SHARED ASSET</span><select id="change-asset" aria-label="Transfer asset"></select></article><article class="exchange-card"><span>AMOUNT</span><input id="change-amount" type="number" min="0" step="any" placeholder="—" disabled></article>
+</div>
+<div id="change-empty" class="chart-empty">No game adapters have registered transfer-ready assets yet. The selectors remain empty until Launcher and game manifests provide compatible data.</div>
+<button id="change-submit" type="button" disabled>GAME-TO-GAME CHANGE NOT YET AVAILABLE</button>
+<p id="exchange-cooldown-status" class="panel-note" role="status">READY · 0/10 SUCCESSFUL ACTIONS THIS VISIT</p>
+<details class="maintenance-latch"><summary>Two-step maintenance unlock</summary>
+<p>Local maintenance safeguard only; this is not account authentication or anti-cheat protection.</p>
+<label for="unlock-phrase">Enter exact confirmation phrase</label><input id="unlock-phrase" type="text" autocomplete="off" spellcheck="false" placeholder="UNLOCK N.U EXCHANGE">
+<div class="unlock-actions"><button id="unlock-step-one" type="button">STEP 1 · ARM UNLOCK</button><button id="unlock-step-two" type="button">STEP 2 · CONFIRM</button><button id="relock-module" type="button">RE-LOCK MODULE</button></div>
+<p id="unlock-feedback" role="status"></p>
+</details>
+</section>
+<footer class="exchange-footer">N.U — NIROO UNIVERSE · GENERATION 1 FICTIONAL ECONOMY</footer>
+</main>
+<script src="./nu-engine.js"></script><script src="./nu-wallet.js?v=20261115-exchange-purchase-exclusion-r2"></script><script src="./nu-exchange-core.js?v=20261114-modular-r1"></script><script src="./nu-exchange-engines.js?v=20261115-dual-engine-r2"></script><script src="./nu-exchange-guard.js?v=20261114-modular-r1"></script><script src="./nu-exchange-replay.js?v=20261115-number-free-periods-r1"></script><script src="./nu-exchange-lock.js?v=20261114-modular-r1"></script><script src="./nu-market-sim.js?v=20261115-purchase-exclusion-r2"></script><script src="./nu-exchange-visuals.js?v=20261115-ambient-drawing-r2"></script><script src="./nu-exchange-analytics.js?v=20261115-market-analytics-r1"></script><script src="./nu-exchange.js?v=20261115-market-analytics-r1"></script>
+<script>
+(function(){
+ "use strict";
+ const status=document.getElementById("exchange-offline-status");
+ let cacheReady=false;
+ function setStatus(value){if(status)status.textContent=value;}
+ if(!("serviceWorker" in navigator)){setStatus("OFFLINE CACHE NOT SUPPORTED");return;}
+ window.addEventListener("load",function(){
+  navigator.serviceWorker.register("./nu-exchange-sw.js").then(function(){
+   return navigator.serviceWorker.ready;
+  }).then(function(){
+   cacheReady=true;
+   setStatus(navigator.onLine?"OFFLINE CACHE READY · LOCAL SAVE ONLY":"OFFLINE · LOCAL SAVE");
+  }).catch(function(){setStatus("OFFLINE CACHE UNAVAILABLE · LOCAL SAVE ONLY");});
+ });
+ window.addEventListener("offline",function(){setStatus(cacheReady?"OFFLINE · LOCAL SAVE":"OFFLINE · CACHE NOT READY");});
+ window.addEventListener("online",function(){setStatus(cacheReady?"ONLINE · OFFLINE CACHE READY":"ONLINE · CACHE INSTALLING");});
+})();
+</script>
+</body></html>
