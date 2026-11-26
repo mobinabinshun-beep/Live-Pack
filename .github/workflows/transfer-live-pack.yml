@@ -1,0 +1,274 @@
+name: Transfer the one machine-QA-passed runtime pack
+
+on:
+  push:
+    paths:
+      - "Operations/2026-11-26/NU-LIVE-PACK-TRANSFER-REQUEST.json"
+      - ".github/workflows/transfer-live-pack.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: nu-live-pack-main-transfer
+  cancel-in-progress: false
+
+jobs:
+  transfer-one-pack:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Live-Pack main
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate owner-authorized transfer request
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          r=json.load(open("Operations/2026-11-26/NU-LIVE-PACK-TRANSFER-REQUEST.json",encoding="utf-8"))
+          assert r["machine_qa_status"]=="ALL-SUCCESS"
+          assert r["expected_runtime_file_count"]==63
+          assert r["target_repository"]=="mobinabinshun-beep/Live-Pack"
+          assert r["target_branch"]=="main"
+          assert r["source_commit"]=="2b80544b35e2be4145c6b696521859fcc46399d6"
+          print("Authorized single-pack request validated")
+          PY
+
+      - name: Fetch exact source, canonical path manifest, and archived evidence
+        run: |
+          set -euo pipefail
+          git clone --no-checkout https://github.com/mobinabinshun-beep/mobinabinshun-beep.git /tmp/nu-source
+          git -C /tmp/nu-source checkout --detach "2b80544b35e2be4145c6b696521859fcc46399d6"
+          test "$(git -C /tmp/nu-source rev-parse HEAD)" = "2b80544b35e2be4145c6b696521859fcc46399d6"
+          git clone --depth 1 https://github.com/mobinabinshun-beep/Repository.git /tmp/nu-repository
+          git clone https://github.com/mobinabinshun-beep/N.U-Game-Studio-Archive.git /tmp/nu-archive
+          git -C /tmp/nu-archive cat-file -e "a9668afc7f806aae634b0fd361f724a46a1f00b4^{commit}"
+          git -C /tmp/nu-archive cat-file -e "ffb728488fe0412f17179434f9ebf3f1eb03328c^{commit}"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path("/tmp/nu-archive/03-PROJECT-ARCHIVES/NIROO-UNIVERSE/2026/LIVE-PACK")
+          candidate=root/"2026-11-26-MACHINE-QA-PASSED-TRANSFER-SOURCE"
+          baseline=root/"2026-11-26-DEPLOYED-493-BASELINE"
+          cm=json.load(open(candidate/"CANDIDATE-MANIFEST.json",encoding="utf-8"))
+          assert cm["source_commit"]=="2b80544b35e2be4145c6b696521859fcc46399d6"
+          assert cm["machine_qa_status"]=="ALL-SUCCESS"
+          assert (candidate/"RESTORE-VERIFICATION.txt").read_text().startswith("RESTORE_TEST=PASS")
+          assert (baseline/"BASELINE-MANIFEST.json").is_file()
+          assert (baseline/"RESTORE-VERIFICATION.txt").read_text().startswith("RESTORE_TEST=PASS")
+          historical=root/"2026-11-25-PRE-CHANGE-CAPTURE"
+          for p in ["README.pre-change.md","LIVE-PACK-CONTRACT.pre-change.md","OWNER-SCOPE-ADDENDUM.pre-change.md"]:
+              assert (historical/p).is_file(), p
+          print("Baseline, candidate archive, restore proofs, and old bootstrap documents verified")
+          PY
+
+      - name: Assemble the exact dependency-closed 63-file runtime
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import json, shutil
+          source=Path("/tmp/nu-source")
+          manifest_path=Path("/tmp/nu-repository/Operations/2026-11-25/NU-LIVE-PACK-RUNTIME-CANDIDATE-MANIFEST-2026-11-25.json")
+          manifest=json.load(open(manifest_path,encoding="utf-8"))
+          excluded={"README.md","assets/Original reference image file for Niroo Universe (N.U).png"}
+          paths=sorted({item["path"] for group in manifest["groups"].values() for item in group if item["path"] not in excluded})
+          paths=sorted(set(paths+["health.txt","assets/nu-celestial-city.png","build-info.json"]))
+          assert len(paths)==63, (len(paths),paths)
+          package=Path("/tmp/nu-live-pack-package")
+          if package.exists(): shutil.rmtree(package)
+          package.mkdir(parents=True)
+          for rel in paths:
+              src=source/rel
+              assert src.is_file(), f"Source runtime file missing: {rel}"
+              dst=package/rel
+              dst.parent.mkdir(parents=True,exist_ok=True)
+              shutil.copy2(src,dst)
+          build_info={
+            "sourceRepository":"mobinabinshun-beep/mobinabinshun-beep",
+            "sourceCommit":"2b80544b35e2be4145c6b696521859fcc46399d6",
+            "status":"TEST CANDIDATE — NOT HUMAN-APPROVED",
+            "machineQaStatus":"ALL-SUCCESS",
+            "machineQaRunIds":[45772797074,45772797046,45772805072,45772805055,45772805075,45772805233,45772805125,45772805097,45772805077,45772805263],
+            "humanQa":"PENDING",
+            "ownerProductApproval":"PENDING",
+            "baselineArchiveCommit":"a9668afc7f806aae634b0fd361f724a46a1f00b4",
+            "candidateArchiveCommit":"ffb728488fe0412f17179434f9ebf3f1eb03328c"
+          }
+          (package/"build-info.json").write_text(json.dumps(build_info,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          Path("/tmp/nu-live-pack-files.txt").write_text("\n".join(paths)+"\n",encoding="utf-8")
+          print(json.dumps({"runtime_files":len(paths),"paths":paths},ensure_ascii=False))
+          PY
+
+      - name: Verify package dependencies and runtime behavior before writing
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          from urllib.parse import unquote
+          import re, json, hashlib
+          root=Path("/tmp/nu-live-pack-package")
+          pages=["index.html","launcher.html","pixel-art-studio.html","casino.html","exchange.html","sim-pixel-demo.html","404.html"]
+          missing=set(); checked=0
+          ext=re.compile(r"\.(?:html|js|css|svg|png|jpe?g|webp|json|txt|xml|ico|woff2?)(?:$|[?#])",re.I)
+          def check(raw,origin):
+              global checked
+              raw=raw.strip().strip('"').strip("'")
+              if not raw or raw.startswith(("#","http:","https:","//","data:","blob:","mailto:","tel:","javascript:")): return
+              raw=raw.split("#",1)[0].split("?",1)[0]
+              if raw.startswith("./"): raw=raw[2:]
+              elif raw.startswith("../"): raw=str((Path(origin).parent/raw).as_posix())
+              raw=unquote(raw)
+              if not raw or (not raw.startswith("/") and not ext.search(raw)): return
+              raw=raw.lstrip("/")
+              p=root/raw
+              if raw.endswith("/"):
+                  if not p.is_dir(): missing.add(f"{origin}: {raw}")
+              elif not p.is_file(): missing.add(f"{origin}: {raw}")
+              checked+=1
+          attr=re.compile(r"""\b(?:src|href|poster|data|action)=["']([^"']+)["']""",re.I)
+          css_url=re.compile(r"""url\(\s*["']?([^)"']+)["']?\s*\)""",re.I)
+          for page in pages:
+              html=(root/page).read_text(encoding="utf-8")
+              for v in attr.findall(html): check(v,page)
+              for v in css_url.findall(html): check(v,page)
+          for p in sorted(root.glob("*.css")):
+              for v in css_url.findall(p.read_text(encoding="utf-8")): check(v,p.name)
+          for p in sorted(root.rglob("*.svg")):
+              for v in re.findall(r"""(?:href|xlink:href)=["']([^"']+)["']""",p.read_text(encoding="utf-8"),re.I): check(v,p.name)
+          for p in sorted(root.glob("*.js")):
+              for v in re.findall(r"""["'](\.{1,2}/[^"']+)["']""",p.read_text(encoding="utf-8")): check(v,p.name)
+          sw=(root/"nu-exchange-sw.js").read_text(encoding="utf-8")
+          assets=re.search(r"""const APP_ASSETS=\[(.*?)\];""",sw,re.S)
+          assert assets
+          for v in re.findall(r"""["']([^"']+)["']""",assets.group(1)): check(v,"nu-exchange-sw.js")
+          exchange=(root/"exchange.html").read_text(encoding="utf-8")
+          assert 'navigator.serviceWorker.register("./nu-exchange-sw.js")' in exchange
+          assert "new URL(path,self.registration.scope)" in sw
+          assert (root/"health.txt").is_file() and "status=ok" in (root/"health.txt").read_text()
+          assert './health.txt?nu_probe=' in (root/"nu-engine.js").read_text()
+          assert './health.txt?calibration=' in (root/"nu-launcher.js").read_text()
+          assert './build-info.json' in (root/"index.html").read_text()
+          assert json.load(open(root/"build-info.json"))["sourceCommit"]=="2b80544b35e2be4145c6b696521859fcc46399d6"
+          assert hashlib.sha256((root/"assets/nu-celestial-city.png").read_bytes()).hexdigest()=="901b19a90892ecc7e5185891a7d1a1e822299188043d2220650c2bd7e176ea52"
+          assert not missing, "Missing runtime dependencies: "+", ".join(sorted(missing))
+          print(f"Pre-transfer package verified: {checked} local references; service worker, health probes, build identity, and image SHA-256 PASS")
+          PY
+          while IFS= read -r -d '' file; do node --check "$file"; done < <(find /tmp/nu-live-pack-package -maxdepth 1 -type f -name '*.js' -print0)
+          grep -Fq 'https://mobinabinshun-beep.github.io/mobinabinshun-beep/' /tmp/nu-live-pack-package/index.html
+          grep -Fq 'https://mobinabinshun-beep.github.io/mobinabinshun-beep/' /tmp/nu-live-pack-package/sitemap.xml
+
+      - name: Replace bootstrap documents with the one runtime pack on main
+        run: |
+          set -euo pipefail
+          git rm -f -- README.md LIVE-PACK-CONTRACT.md OWNER-SCOPE-ADDENDUM.md .github/workflows/transfer-live-pack.yml Operations/2026-11-26/NU-LIVE-PACK-TRANSFER-REQUEST.json
+          cp -a /tmp/nu-live-pack-package/. .
+          git add -A
+          python - <<'PY'
+          from pathlib import Path
+          import subprocess
+          expected=set(Path("/tmp/nu-live-pack-files.txt").read_text().splitlines())
+          actual=set(subprocess.check_output(["git","ls-files","--cached","-z"]).decode().split("\0"))-{""}
+          assert actual==expected, {"missing":sorted(expected-actual),"extra":sorted(actual-expected)}
+          assert len(actual)==63
+          print("Staged Live-Pack root contains exactly 63 runtime files and no governance/QA documents")
+          PY
+          while IFS= read -r file; do
+            if [ "$file" != "build-info.json" ]; then
+              source_blob=$(git -C /tmp/nu-source rev-parse "HEAD:$file")
+              target_blob=$(git hash-object "$file")
+              test "$source_blob" = "$target_blob"
+            fi
+          done < /tmp/nu-live-pack-files.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Transfer one machine-QA-passed N.U runtime pack"
+          git push origin HEAD:main
+
+      - name: Read back Live-Pack main and create transfer evidence
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          TARGET_COMMIT=$(git rev-parse origin/main)
+          test "$TARGET_COMMIT" = "$(git rev-parse HEAD)"
+          mkdir -p /tmp/nu-live-pack-readback /tmp/nu-live-pack-evidence
+          git archive origin/main | tar -xf - -C /tmp/nu-live-pack-readback
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib,json,subprocess,zipfile
+          root=Path(".")
+          readback=Path("/tmp/nu-live-pack-readback")
+          paths=Path("/tmp/nu-live-pack-files.txt").read_text().splitlines()
+          assert len(paths)==63
+          entries=[]
+          for rel in paths:
+              p=root/rel; rb=readback/rel
+              assert p.is_file() and rb.is_file(), rel
+              assert p.read_bytes()==rb.read_bytes(), f"Read-back byte mismatch: {rel}"
+              entries.append({
+                "path":rel,
+                "bytes":p.stat().st_size,
+                "sha256":hashlib.sha256(p.read_bytes()).hexdigest(),
+                "targetGitBlobSha":subprocess.check_output(["git","rev-parse",f"HEAD:{rel}"],text=True).strip(),
+                "sourceGitBlobSha":subprocess.check_output(["git","-C","/tmp/nu-source","rev-parse",f"HEAD:{rel}"],text=True).strip() if rel!="build-info.json" else None
+              })
+          tracked=subprocess.check_output(["git","ls-tree","-r","--name-only","origin/main"],text=True).splitlines()
+          assert sorted(tracked)==sorted(paths), {"tracked":tracked,"expected":paths}
+          assert not (root/"README.md").exists()
+          assert not (root/"LIVE-PACK-CONTRACT.md").exists()
+          assert not (root/"OWNER-SCOPE-ADDENDUM.md").exists()
+          assert not (root/".github").exists()
+          assert not (root/"Operations").exists()
+          source_commit="2b80544b35e2be4145c6b696521859fcc46399d6"
+          target_commit=subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip()
+          manifest={
+            "manifest_id":"NU-LIVE-PACK-TRANSFER-20261126-001",
+            "source_repository":"mobinabinshun-beep/mobinabinshun-beep",
+            "source_commit":source_commit,
+            "target_repository":"mobinabinshun-beep/Live-Pack",
+            "target_branch":"main",
+            "target_commit":target_commit,
+            "machine_qa_status":"ALL-SUCCESS",
+            "machine_qa_run_ids":[45772797074,45772797046,45772805072,45772805055,45772805075,45772805233,45772805125,45772805097,45772805077,45772805263],
+            "baseline_archive_commit":"a9668afc7f806aae634b0fd361f724a46a1f00b4",
+            "candidate_archive_commit":"ffb728488fe0412f17179434f9ebf3f1eb03328c",
+            "readback_status":"PASS",
+            "runtime_file_count":len(entries),
+            "total_bytes":sum(x["bytes"] for x in entries),
+            "hash_algorithm":"SHA-256",
+            "files":entries
+          }
+          out=Path("/tmp/nu-live-pack-evidence")
+          (out/"LIVE-PACK-MANIFEST.json").write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          report=[
+            "# N.U Live-Pack transfer report",
+            "",
+            f"Source commit: {source_commit}",
+            f"Live-Pack main commit: {target_commit}",
+            f"Runtime files: {len(entries)}",
+            f"Total bytes: {manifest['total_bytes']}",
+            "Machine QA: ALL SUCCESS",
+            "Git read-back: PASS — 63/63 byte-identical",
+            "Root cleanup: PASS — no README/governance/QA/workflow files",
+            "Human QA: PENDING",
+            "Product release approval: PENDING",
+            "Canonical URL retained in index and sitemap: https://mobinabinshun-beep.github.io/mobinabinshun-beep/",
+            ""
+          ]
+          (out/"TRANSFER-REPORT.md").write_text("\n".join(report),encoding="utf-8")
+          with zipfile.ZipFile(out/"live-pack-runtime.zip","w",zipfile.ZIP_DEFLATED) as z:
+              for rel in paths: z.write(root/rel,arcname=rel)
+          digest=hashlib.sha256((out/"live-pack-runtime.zip").read_bytes()).hexdigest()
+          (out/"RUNTIME-ZIP-SHA256.txt").write_text(digest+"  live-pack-runtime.zip\n",encoding="utf-8")
+          print(json.dumps({"target_commit":target_commit,"files":len(entries),"bytes":manifest["total_bytes"],"zip_sha256":digest}))
+          PY
+
+      - name: Upload transfer manifest, runtime package, and read-back proof
+        uses: actions/upload-artifact@v4
+        with:
+          name: nu-live-pack-transfer-evidence
+          path: /tmp/nu-live-pack-evidence/*
+          if-no-files-found: error
+          retention-days: 90
